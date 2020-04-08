@@ -9,6 +9,7 @@ using TodoApi.Models;
 
 namespace TodoApi.Controllers
 {
+    [Produces("application/json")]
     [Route("api/TodoItems")]
     [ApiController]
     public class TodoItemsController : ControllerBase
@@ -21,7 +22,15 @@ namespace TodoApi.Controllers
         }
 
         // GET: api/TodoItems
+        /// <summary>
+        /// Get all stored Todo Items
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">Returns all the TodoItems</response>
+        /// <response code="404">Not Found</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
         {
             return await _context.TodoItems
@@ -30,7 +39,28 @@ namespace TodoApi.Controllers
         }
 
         // GET: api/TodoItems/5
+        /// <summary>
+        /// Get a specific TodoItem with mathcing ID
+        /// </summary>
+        /// <remarks>
+        /// Sample response:
+        ///     
+        ///     GET /Todo/{id}
+        ///     {
+        ///         "id": 1,
+        ///         "name": "Walk Dog",
+        ///         "isComplete": true
+        ///     }
+        ///     
+        /// </remarks>
+        /// <param name="id">The ID of the Item you wish to find</param>
+        /// <returns></returns>
+        /// <response code="200">Returns the Item with the same ID</response>
+        /// <response code="404">Couldn't find an Item with that ID</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
@@ -46,7 +76,17 @@ namespace TodoApi.Controllers
         // PUT: api/TodoItems/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
+        /// <summary>
+        /// Update an existing TodoItem with matching ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="todoItemDTO"></param>
+        /// <returns></returns>
+        /// <response code="201">Returns newly created TodoItem</response>
+        /// <response code="400">Did not create a TodoItem</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateTodoItem(long id, TodoItemDTO todoItemDTO)
         {
             if (id != todoItemDTO.Id)
@@ -78,7 +118,16 @@ namespace TodoApi.Controllers
         // POST: api/TodoItems
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
+        /// <summary>
+        /// Create a new TodoItem
+        /// </summary>
+        /// <param name="todoItemDTO"></param>
+        /// <returns></returns>
+        /// <response code="201">Returns newly created TodoItem</response>
+        /// <response code="400">Did not create a TodoItem</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<TodoItem>> CreateTodoItem(TodoItemDTO todoItemDTO)
         {
             var todoItem = new TodoItem
@@ -97,7 +146,16 @@ namespace TodoApi.Controllers
         }
 
         // DELETE: api/TodoItems/5
+        /// <summary>
+        /// Delete an existing TodoItem with matching ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <response code="200">TodoItem deleted</response>
+        /// <response code="404">Couldn't find a TodoItem with that ID</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteTodoItem(long id)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);

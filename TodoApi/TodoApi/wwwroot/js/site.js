@@ -49,13 +49,25 @@ function displayEditForm(id) {
     document.getElementById('editForm').style.display = 'block';
 }
 
+function changeEditText() {
+    // Get the text from the selected option
+    const select = document.getElementById('selectMenu');
+    const itemText = select.options[select.selectedIndex].text;
+    // Add the text from the selected option to the input box
+    document.getElementById('edit-name').value = itemText;
+}
+
 function updateItem() {
-    const itemId = document.getElementById('edit-id').value;
+    const itemId = document.getElementById('selectMenu').value;
+
     const item = {
         id: parseInt(itemId, 10),
         isComplete: document.getElementById('edit-isComplete').checked,
         name: document.getElementById('edit-name').value.trim()
     };
+
+    document.getElementById('edit-name').value = '';
+    document.getElementById('edit-isComplete').checked = false;
 
     fetch(`${uri}/${itemId}`, {
         method: 'PUT',
@@ -68,7 +80,7 @@ function updateItem() {
         .then(() => getItems())
         .catch(error => console.error('Unable to update item.', error));
 
-    closeInput();
+    //closeInput();
 
     return false;
 }
@@ -84,6 +96,9 @@ function _displayCount(itemCount) {
 }
 
 function _displayItems(data) {
+    const select = document.getElementById('selectMenu');
+    select.innerHTML = '';
+    select.append(new Option('Please Select:', ''));
     const tBody = document.getElementById('todos');
     tBody.innerHTML = '';
 
@@ -92,16 +107,22 @@ function _displayItems(data) {
     const button = document.createElement('button');
 
     data.forEach(item => {
+        // Add an option to the select menu
+        select.append(new Option(item.name, item.id));
+
+        // Add Items to the table
         let isCompleteCheckbox = document.createElement('input');
         isCompleteCheckbox.type = 'checkbox';
         isCompleteCheckbox.disabled = true;
         isCompleteCheckbox.checked = item.isComplete;
 
         let editButton = button.cloneNode(false);
+        editButton.className += 'btn btn-success';
         editButton.innerText = 'Edit';
         editButton.setAttribute('onclick', `displayEditForm(${item.id})`);
 
         let deleteButton = button.cloneNode(false);
+        deleteButton.className += 'btn btn-danger';
         deleteButton.innerText = 'Delete';
         deleteButton.setAttribute('onclick', `deleteItem(${item.id})`);
 

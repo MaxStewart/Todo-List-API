@@ -1,0 +1,31 @@
+﻿h1 {
+    text-align: center;
+}
+
+#addItem, #editForm, .getTable {
+    background-color: gray;
+    padding: 20px;
+    max-width:70%;
+    margin: auto;
+    margin-top: 10px;
+    text-align: center;
+}
+
+ul.FormList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.FormList li {
+    text-align: left;
+    padding: 10px;
+}
+
+ul.FormList li.centeredItem {
+    text-align: center;
+}
+
+h3 {
+    margin-top: 0;
+}
