@@ -9,6 +9,7 @@ function getItems() {
 }
 
 function addItem() {
+    $('#collapseOne').collapse('hide');
     const addNameTextbox = document.getElementById('add-name');
 
     const item = {
@@ -45,7 +46,7 @@ function displayEditForm(id) {
 
     document.getElementById('edit-name').value = item.name;
     document.getElementById('edit-id').value = item.id;
-    document.getElementById('edit-isComplete').checked = item.isComplete;
+    document.getElementById('defaultUnchecked').checked = item.isComplete;
     document.getElementById('editForm').style.display = 'block';
 }
 
@@ -58,16 +59,17 @@ function changeEditText() {
 }
 
 function updateItem() {
+    $('#collapseTwo').collapse('hide');
     const itemId = document.getElementById('selectMenu').value;
 
     const item = {
         id: parseInt(itemId, 10),
-        isComplete: document.getElementById('edit-isComplete').checked,
+        isComplete: document.getElementById('defaultUnchecked').checked,
         name: document.getElementById('edit-name').value.trim()
     };
 
     document.getElementById('edit-name').value = '';
-    document.getElementById('edit-isComplete').checked = false;
+    document.getElementById('defaultUnchecked').checked = false;
 
     fetch(`${uri}/${itemId}`, {
         method: 'PUT',
@@ -116,13 +118,8 @@ function _displayItems(data) {
         isCompleteCheckbox.disabled = true;
         isCompleteCheckbox.checked = item.isComplete;
 
-        let editButton = button.cloneNode(false);
-        editButton.className += 'btn btn-success';
-        editButton.innerText = 'Edit';
-        editButton.setAttribute('onclick', `displayEditForm(${item.id})`);
-
         let deleteButton = button.cloneNode(false);
-        deleteButton.className += 'btn btn-danger';
+        deleteButton.className += 'btn btn-sm btn-danger';
         deleteButton.innerText = 'Delete';
         deleteButton.setAttribute('onclick', `deleteItem(${item.id})`);
 
@@ -135,10 +132,7 @@ function _displayItems(data) {
         let textNode = document.createTextNode(item.name);
         td2.appendChild(textNode);
 
-        let td3 = tr.insertCell(2);
-        td3.appendChild(editButton);
-
-        let td4 = tr.insertCell(3);
+        let td4 = tr.insertCell(2);
         td4.appendChild(deleteButton);
     });
 

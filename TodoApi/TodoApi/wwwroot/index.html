@@ -26,7 +26,7 @@
                         <h3>Add TodoItem</h3>
                         <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
                             <input type="text" id="add-name" placeholder="New to-do">
-                            <input class="btn btn-primary" type="submit" value="Add">
+                            <input class="btn btn-sm btn-primary" type="submit" value="Add">
                         </form>
                     </div>
                 </div>
@@ -53,9 +53,9 @@
                                 <label for="edit-name">Edit item name</label>
                                 <input type="text" class="form-control" id="edit-name">
                             </div>
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="edit-isComplete">
-                                <label class="form-check-label" for="edit-isComplete">Is item complete</label>
+                            <div class="form-group custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+                                <label class="custom-control-label" for="defaultUnchecked">Completed?</label>
                             </div>
                             <input class="btn btn-primary" type="submit" value="Save">
                         </form>
@@ -70,7 +70,6 @@
                 <tr>
                     <th scope="col">Is Complete?</th>
                     <th scope="col">Name</th>
-                    <th></th>
                     <th></th>
                 </tr>
             </thead>
